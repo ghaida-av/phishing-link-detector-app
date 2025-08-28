@@ -23,13 +23,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run tests
-      run: |
-        pytest -v
+   - name: Run tests
+  run: |
+    ONPATH=. pytest -v
 
-    - name: Run pipeline
-      run: |
-        python phish_detector/run_pipeline.py
+- name: Run pipeline
+  run: |
+    python phish_detector/run_pipeline.py
+
 
 
 
