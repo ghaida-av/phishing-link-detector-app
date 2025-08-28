@@ -25,6 +25,11 @@ jobs:
 
     - name: Run tests
       run: |
-        PYTHONPATH=. pytest -v
+        PYTH
+        - name: Run pipeline
+  run: |
+    python phish_detector/run_pipeline.py
+
+        ONPATH=. pytest -v
 
 
