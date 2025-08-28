@@ -18,24 +18,17 @@ jobs:
       with:
         python-version: "3.11"
 
-   - name: Install dependencies
-  run: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-- name: Run tests
-  run: |
-    export PYTHONPATH=$PYTHONPATH:$(pwd)
-    pytest -v
+    - name: Run tests
+      run: |
+        export PYTHONPATH=$(pwd)
+        pytest -v
 
-- name: Run pipeline
-  run: |
-    python phish_detector/run_pipeline.py
-
-
-
-
-
-    
-
-
+    - name: Run pipeline
+      run: |
+        export PYTHONPATH=$(pwd)
+        python phish_detector/run_pipeline.py
