@@ -2,3 +2,7 @@ pandas
 scikit-learn
 tldextract
 pytest
+fastapi
+uvicorn[standard]
+joblib
+scikit-learn
