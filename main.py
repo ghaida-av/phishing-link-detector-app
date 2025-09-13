@@ -1,25 +1,49 @@
-import joblib
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from phish_detector.features import extract_features
+import joblib
 
 app = FastAPI()
 
-# Load ML pipeline
-model = joblib.load("phish_detector/pipeline.joblib")
+# ✅ Allow frontend (phish-front) to call backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # for now allow all, you can restrict later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Load your model
+try:
+    model = joblib.load("phish_detector/pipeline.joblib")
+except:
+    model = None
 
 class URLItem(BaseModel):
     url: str
 
 @app.get("/")
-def home():
+def read_root():
     return {"message": "✅ Phishing Detector API is running"}
 
 @app.post("/predict/")
 def predict(item: URLItem):
-    url = item.url
-    features = extract_features(url)
-    prediction = model.predict([features])[0]
-    return {"url": url, "prediction": int(prediction)}
+    if not model:
+        return {"error": "Model not loaded"}
+    prediction = model.predict([item.url])[0]
+    return {"url": item.url, "prediction": prediction}
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # allow frontend to connect
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 
 
